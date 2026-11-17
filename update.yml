@@ -1,0 +1,49 @@
+name: 지원금 수집·배포
+on:
+  schedule:
+    - cron: "23 0,12 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 폰트·Pillow 설치 (OG 카드용)
+        run: |
+          pip install pillow
+          sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk > /dev/null
+      - name: 수집
+        env:
+          DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
+        run: python3 scripts/collect.py
+      - name: 데이터 커밋
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data/benefits.json
+          git diff --cached --quiet || git commit -m "데이터 갱신"
+          git push || true
+      - name: 빌드
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          ADSENSE_CLIENT: ${{ vars.ADSENSE_CLIENT }}
+          CNAME: ${{ vars.CNAME }}
+        run: python3 scripts/build.py
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4
