@@ -137,6 +137,7 @@ def channels_box():
 def page(title, desc, body, canonical, extra="", ogimg=""):
     OGIMG = f'<meta property="og:image" content="{ogimg}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">' if ogimg else ""
     return f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="naver-site-verification" content="a92f14493c3cb24f5f030d0c1cf3ab28b2727621">
 <title>{e(title)}</title><meta name="description" content="{e(desc)}"><link rel="canonical" href="{canonical}">
 <meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}">{OGIMG}{ADHEAD}{GAHEAD}{extra}<style>{CSS}</style></head><body>{SAMPLE}{body}
 {FOOT}</body></html>'''
