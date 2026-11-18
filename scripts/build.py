@@ -152,8 +152,8 @@ for i, x in enumerate(items):
     tel_html = "".join(f"<li>{e(t)}</li>" for t in tels)
     if tel_html: folds += f'<details class="fold"><summary>전화문의</summary><div class="fb"><ul class="l1">{tel_html}</ul></div></details>'
     btns = ""
-    if x.get("online_url"): btns += f'<a class="pb main" href="{e(x["online_url"])}" target="_blank" rel="nofollow noopener">온라인 신청하기</a>'
-    if x.get("url"): btns += f'<a class="pb" href="{e(x["url"])}" target="_blank" rel="nofollow noopener">정부24에서 자세히 보기</a>'
+    if x.get("online_url"): btns += f'<a class="pb main" style="flex:1 1 220px;text-align:center;padding:17px 16px;font-size:18px" href="{e(x["online_url"])}" target="_blank" rel="nofollow noopener">온라인 신청하기</a>'
+    if x.get("url"): btns += f'<a class="pb" style="flex:1 1 220px;text-align:center;padding:17px 16px;font-size:17px" href="{e(x["url"])}" target="_blank" rel="nofollow noopener">정부24에서 자세히 보기</a>'
     rel = [y for y in items if y["id"] != x["id"] and y.get("field") and y.get("field") == x.get("field")]
     rel.sort(key=lambda y: -y["views"]); rel = rel[:6]
     urgent = [y for y in items if y["id"] != x["id"] and y["dkind"] == "dated" and y["dd"] is not None and 0 <= y["dd"] <= 30][:5]
@@ -165,9 +165,9 @@ for i, x in enumerate(items):
 <div class="h"><small>신청기한</small><strong class="money">{e(dlab(x))}</strong></div>
 <div class="h"><small>지원유형</small><strong>{e(x.get("support_type") or x.get("user_type") or "공고문 참조")}</strong></div>
 <div class="mini"><span>🏢 접수: {e(x.get("apply_org") or x.get("org"))}</span><span>👤 {e(x.get("user_type"))}</span></div></section>
+{f'<div class="pbtns" style="margin:14px 0">{btns}</div>' if btns else ""}
 {ad("detail-top")}
 {folds}
-{f'<div class="pbtns" style="margin:14px 0">{btns}</div>' if btns else ""}
 {ad("detail-mid")}
 {channels_box()}
 {f'<section class="card2 rel"><h2>같은 분야 지원금</h2>' + "".join(f'<a href="{y["id"]}.html"><strong>{e(y["name"])}</strong><span>{e(y.get("org"))} · {e(dlab(y))}</span></a>' for y in rel) + '</section>' if rel else ""}
