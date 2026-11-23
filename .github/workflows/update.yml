@@ -1,7 +1,8 @@
 name: 지원금 수집·배포
 on:
   schedule:
-    - cron: "23 0,12 * * *"
+    - cron: "23 0,12 * * *"→ Runs at 00:23 and 12:23
+
   workflow_dispatch:
 permissions:
   contents: write
@@ -41,9 +42,11 @@ jobs:
           SITE_URL: ${{ vars.SITE_URL }}
           ADSENSE_CLIENT: ${{ vars.ADSENSE_CLIENT }}
           CNAME: ${{ vars.CNAME }}
+          AD_SLOT: ${{ vars.AD_SLOT }}
         run: python3 scripts/build.py
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
       - id: deployment
         uses: actions/deploy-pages@v4
+
