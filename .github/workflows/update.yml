@@ -1,7 +1,7 @@
 name: 지원금 수집·배포
 on:
   schedule:
-    - cron: "23 0,12 * * *
+    - cron: "23 0,12 * * *"
   workflow_dispatch:
 permissions:
   contents: write
